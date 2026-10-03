@@ -1,0 +1,220 @@
+/* ========================================
+   FOOTER
+======================================== */
+
+.netflix-footer {
+  width: 100%;
+
+  background-color: #000000;
+
+  color: #737373;
+
+  border-top: 1px solid #222222;
+
+  padding:
+    70px
+    4%
+    45px;
+
+  box-sizing: border-box;
+}
+
+
+.footer-container {
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+
+/* ========================================
+   CONTACT
+======================================== */
+
+.footer-contact {
+  margin-bottom: 30px;
+}
+
+.footer-contact p {
+  margin: 0;
+
+  color: #737373;
+
+  font-size: 16px;
+}
+
+
+/* ========================================
+   LINKS
+======================================== */
+
+.footer-links {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 35px;
+}
+
+
+.footer-column {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+
+.footer-column a {
+  color: #737373;
+
+  font-size: 13px;
+
+  line-height: 1.4;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+.footer-column a:hover {
+  color: #ffffff;
+
+  text-decoration: underline;
+}
+
+
+/* ========================================
+   LANGUAGE
+======================================== */
+
+.footer-language {
+  margin-top: 35px;
+}
+
+
+.language-select {
+  min-width: 130px;
+
+  padding:
+    10px
+    35px
+    10px
+    14px;
+
+  border:
+    1px
+    solid
+    #737373;
+
+  border-radius: 2px;
+
+  background-color: #000000;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  outline: none;
+}
+
+
+.language-select:focus {
+  border-color: #ffffff;
+}
+
+
+/* ========================================
+   BRAND
+======================================== */
+
+.footer-brand {
+  margin-top: 30px;
+}
+
+
+.footer-logo {
+  margin: 0 0 12px;
+
+  color: #e50914;
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+  letter-spacing: -1px;
+}
+
+
+.footer-country {
+  margin: 0 0 8px;
+
+  color: #737373;
+
+  font-size: 13px;
+}
+
+
+.footer-description {
+  margin: 0;
+
+  color: #555555;
+
+  font-size: 12px;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 800px) {
+
+  .footer-links {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 30px 20px;
+  }
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 500px) {
+
+  .netflix-footer {
+    padding:
+      50px
+      20px
+      35px;
+  }
+
+
+  .footer-links {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 25px 15px;
+  }
+
+
+  .footer-column {
+    gap: 14px;
+  }
+
+
+  .footer-column a {
+    font-size: 12px;
+  }
+
+}

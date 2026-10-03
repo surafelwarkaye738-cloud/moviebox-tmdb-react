@@ -1,0 +1,221 @@
+.home-page {
+  width: 100%;
+
+  min-height: 100vh;
+
+  background-color: #000000;
+
+  color: #ffffff;
+}
+
+.home-main {
+  width: 100%;
+
+  min-height: 60vh;
+
+  background-color: #000000;
+}
+
+.home-movie-sections {
+  position: relative;
+
+  z-index: 5;
+
+  margin-top: -30px;
+
+  padding-bottom: 70px;
+
+  background-color: #000000;
+}
+
+.home-movie-sections
+  .movie-row:first-child {
+  padding-top: 10px;
+}
+
+/* =================================
+   LOADING
+================================= */
+
+.home-loading {
+  min-height: 70vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 20px;
+
+  padding: 40px 20px;
+
+  background-color: #000000;
+
+  color: #ffffff;
+
+  text-align: center;
+}
+
+.home-loading p {
+  margin: 0;
+
+  font-size: 1rem;
+
+  color: #b3b3b3;
+}
+
+.loading-spinner {
+  width: 50px;
+
+  height: 50px;
+
+  border: 4px solid #333333;
+
+  border-top-color: #e50914;
+
+  border-radius: 50%;
+
+  animation:
+    loading-spin 0.9s linear infinite;
+}
+
+@keyframes loading-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =================================
+   ERROR
+================================= */
+
+.home-error {
+  min-height: 70vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  padding: 40px 20px;
+
+  background-color: #000000;
+
+  text-align: center;
+}
+
+.home-error h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 2rem;
+
+  line-height: 1.2;
+}
+
+.home-error p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: #b3b3b3;
+
+  line-height: 1.6;
+}
+
+.retry-button {
+  margin-top: 10px;
+
+  padding: 12px 24px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background-color: #e50914;
+
+  color: #ffffff;
+
+  font-size: 1rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.retry-button:hover {
+  background-color: #f6121d;
+
+  transform: translateY(-2px);
+}
+
+.retry-button:active {
+  transform: translateY(0);
+}
+
+/* =================================
+   TABLET
+================================= */
+
+@media (max-width: 900px) {
+  .home-movie-sections {
+    margin-top: -20px;
+
+    padding-bottom: 50px;
+  }
+
+  .home-error h2 {
+    font-size: 1.7rem;
+  }
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 600px) {
+  .home-movie-sections {
+    margin-top: 0;
+
+    padding-bottom: 35px;
+  }
+
+  .home-loading {
+    min-height: 60vh;
+  }
+
+  .home-error {
+    min-height: 60vh;
+  }
+
+  .home-error h2 {
+    font-size: 1.5rem;
+  }
+
+  .home-error p {
+    font-size: 0.9rem;
+  }
+
+  .loading-spinner {
+    width: 42px;
+
+    height: 42px;
+  }
+}
