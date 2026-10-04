@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -9,11 +10,19 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import {
+  useMyList,
+} from "../../context/MyListContext";
+
+import {
+  useAuth,
+} from "../../context/AuthContext";
+
 import "./Header.css";
 
 function Header() {
   /*
-    Navigation helper.
+    React Router navigation.
   */
   const navigate =
     useNavigate();
@@ -25,15 +34,44 @@ function Header() {
     useLocation();
 
   /*
-    Search input state.
+    My List count.
+  */
+  const {
+    myListCount,
+  } = useMyList();
+
+  /*
+    Authentication state.
+  */
+  const {
+    user,
+    isAuthenticated,
+    signOut,
+  } = useAuth();
+
+  /*
+    Search input.
   */
   const [searchText, setSearchText] =
     useState("");
 
   /*
-    When the URL changes,
-    update the search box if
-    a query exists.
+    Profile dropdown state.
+  */
+  const [
+    profileMenuOpen,
+    setProfileMenuOpen,
+  ] = useState(false);
+
+  /*
+    Reference to profile menu.
+  */
+  const profileMenuRef =
+    useRef(null);
+
+  /*
+    Keep search input synchronized
+    with the current URL.
   */
   useEffect(() => {
     const params =
@@ -48,36 +86,52 @@ function Header() {
   }, [location.search]);
 
   /*
-    Submit search.
+    Close profile menu when the
+    user clicks outside it.
+  */
+  useEffect(() => {
+    const handleOutsideClick =
+      (event) => {
+        if (
+          profileMenuRef.current &&
+          !profileMenuRef.current.contains(
+            event.target
+          )
+        ) {
+          setProfileMenuOpen(
+            false
+          );
+        }
+      };
+
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
+    };
+  }, []);
+
+  /*
+    Search submit.
   */
   const handleSearchSubmit = (
     event
   ) => {
-    /*
-      Prevent page refresh.
-    */
     event.preventDefault();
 
-    /*
-      Remove unnecessary spaces.
-    */
     const query =
       searchText.trim();
 
-    /*
-      Don't search an empty string.
-    */
     if (!query) {
       return;
     }
 
-    /*
-      Open Search page.
-
-      Example:
-
-      /search?query=Spider-Man
-    */
     navigate(
       `/search?query=${encodeURIComponent(
         query
@@ -86,21 +140,65 @@ function Header() {
   };
 
   /*
-    Clear the search input.
+    Clear search.
   */
   const handleClearSearch = () => {
     setSearchText("");
 
-    /*
-      If we are currently on
-      the search page, go back home.
-    */
     if (
       location.pathname ===
       "/search"
     ) {
       navigate("/");
     }
+  };
+
+  /*
+    Get user initials.
+  */
+  const getInitials = () => {
+    if (!user?.name) {
+      return "U";
+    }
+
+    return user.name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(
+        (part) =>
+          part.charAt(0).toUpperCase()
+      )
+      .join("");
+  };
+
+  /*
+    Open profile.
+  */
+  const handleProfile = () => {
+    setProfileMenuOpen(false);
+
+    navigate("/profile");
+  };
+
+  /*
+    Open login.
+  */
+  const handleLogin = () => {
+    setProfileMenuOpen(false);
+
+    navigate("/login");
+  };
+
+  /*
+    Sign out.
+  */
+  const handleSignOut = () => {
+    setProfileMenuOpen(false);
+
+    signOut();
+
+    navigate("/");
   };
 
   return (
@@ -138,6 +236,18 @@ function Header() {
             }
           >
             Home
+          </Link>
+
+          <Link
+            to="/my-list"
+            className={
+              location.pathname ===
+              "/my-list"
+                ? "header-nav-link active"
+                : "header-nav-link"
+            }
+          >
+            My List
           </Link>
 
         </nav>
@@ -193,6 +303,169 @@ function Header() {
           </button>
 
         </form>
+
+        {/* =================================
+            MY LIST COUNT
+        ================================= */}
+
+        <Link
+          to="/my-list"
+          className="header-list-count"
+          aria-label={`My List, ${myListCount} saved movies`}
+          title="My List"
+        >
+          ♡
+
+          {myListCount > 0 && (
+            <span>
+              {myListCount}
+            </span>
+          )}
+        </Link>
+
+        {/* =================================
+            PROFILE
+        ================================= */}
+
+        <div
+          className="header-user-menu"
+          ref={profileMenuRef}
+        >
+
+          {isAuthenticated ? (
+            <>
+              <button
+                type="button"
+                className="header-profile-button"
+                onClick={() =>
+                  setProfileMenuOpen(
+                    (current) =>
+                      !current
+                  )
+                }
+                aria-expanded={
+                  profileMenuOpen
+                }
+                aria-haspopup="menu"
+              >
+
+                <span className="header-profile-avatar">
+                  {getInitials()}
+                </span>
+
+                <span className="header-profile-name">
+                  {user?.name ||
+                    "Profile"}
+                </span>
+
+                <span
+                  className={
+                    profileMenuOpen
+                      ? "header-profile-arrow open"
+                      : "header-profile-arrow"
+                  }
+                >
+                  ▼
+                </span>
+
+              </button>
+
+              {profileMenuOpen && (
+                <div
+                  className="header-profile-dropdown"
+                  role="menu"
+                >
+
+                  <div className="profile-dropdown-user">
+
+                    <div className="dropdown-avatar">
+                      {getInitials()}
+                    </div>
+
+                    <div>
+                      <strong>
+                        {user?.name}
+                      </strong>
+
+                      <span>
+                        {user?.email}
+                      </span>
+                    </div>
+
+                  </div>
+
+                  <div className="profile-dropdown-divider"></div>
+
+                  <button
+                    type="button"
+                    className="profile-dropdown-item"
+                    onClick={
+                      handleProfile
+                    }
+                  >
+                    <span>
+                      👤
+                    </span>
+
+                    Profile
+                  </button>
+
+                  <Link
+                    to="/my-list"
+                    className="profile-dropdown-item"
+                    onClick={() =>
+                      setProfileMenuOpen(
+                        false
+                      )
+                    }
+                  >
+                    <span>
+                      ♡
+                    </span>
+
+                    My List
+
+                    {myListCount >
+                      0 && (
+                      <span className="dropdown-count">
+                        {myListCount}
+                      </span>
+                    )}
+                  </Link>
+
+                  <div className="profile-dropdown-divider"></div>
+
+                  <button
+                    type="button"
+                    className="profile-dropdown-item sign-out-item"
+                    onClick={
+                      handleSignOut
+                    }
+                  >
+                    <span>
+                      ⇥
+                    </span>
+
+                    Sign Out
+                  </button>
+
+                </div>
+              )}
+
+            </>
+          ) : (
+            <button
+              type="button"
+              className="header-sign-in-button"
+              onClick={
+                handleLogin
+              }
+            >
+              Sign In
+            </button>
+          )}
+
+        </div>
 
       </div>
 

@@ -13,6 +13,10 @@ import Footer from "../../components/Footer/Footer";
 import TrailerModal from "../../components/TrailerModal/TrailerModal";
 
 import {
+  useMyList,
+} from "../../context/MyListContext";
+
+import {
   getMovieDetails,
   getPosterUrl,
   getBackdropUrl,
@@ -36,6 +40,14 @@ function MovieDetails() {
   */
   const navigate =
     useNavigate();
+
+  /*
+    My List.
+  */
+  const {
+    isInMyList,
+    toggleMyList,
+  } = useMyList();
 
   /*
     Movie data.
@@ -68,7 +80,7 @@ function MovieDetails() {
     useState("");
 
   /*
-    Load details.
+    Load movie details.
   */
   useEffect(() => {
     const loadMovieDetails =
@@ -128,35 +140,25 @@ function MovieDetails() {
   };
 
   /*
-    Return Home.
+    Go Home.
   */
   const handleBack = () => {
     navigate("/");
   };
 
   /*
-    Play movie trailer.
+    Play trailer.
   */
   const handlePlay = () => {
-    /*
-      Get all videos returned
-      by movie details endpoint.
-    */
     const videos =
       movie?.videos?.results ||
       [];
 
-    /*
-      Find best trailer.
-    */
     const trailer =
       findBestTrailer(
         videos
       );
 
-    /*
-      Open the modal.
-    */
     setIsTrailerOpen(true);
 
     setSelectedTrailer(
@@ -171,7 +173,7 @@ function MovieDetails() {
   };
 
   /*
-    Close trailer modal.
+    Close trailer.
   */
   const handleCloseTrailer =
     () => {
@@ -185,16 +187,18 @@ function MovieDetails() {
     };
 
   /*
-    Temporary My List action.
+    Add/remove from My List.
   */
   const handleAddToList = () => {
-    console.log(
-      `Add "${movie?.title}" to My List`
-    );
+    if (!movie) {
+      return;
+    }
+
+    toggleMyList(movie);
   };
 
   /*
-    Loading state.
+    Loading.
   */
   if (loading) {
     return (
@@ -219,7 +223,7 @@ function MovieDetails() {
   }
 
   /*
-    Error state.
+    Error.
   */
   if (error) {
     return (
@@ -256,7 +260,7 @@ function MovieDetails() {
   }
 
   /*
-    No movie.
+    Movie not found.
   */
   if (!movie) {
     return (
@@ -289,7 +293,7 @@ function MovieDetails() {
   }
 
   /*
-    Build backdrop URL.
+    Backdrop.
   */
   const backdropUrl =
     getBackdropUrl(
@@ -298,7 +302,7 @@ function MovieDetails() {
     );
 
   /*
-    Build poster URL.
+    Poster.
   */
   const posterUrl =
     getPosterUrl(
@@ -323,7 +327,9 @@ function MovieDetails() {
   const rating =
     typeof movie.vote_average ===
     "number"
-      ? movie.vote_average.toFixed(1)
+      ? movie.vote_average.toFixed(
+          1
+        )
       : "N/A";
 
   /*
@@ -349,6 +355,12 @@ function MovieDetails() {
           6
         )
       : [];
+
+  /*
+    My List status.
+  */
+  const saved =
+    isInMyList(movie.id);
 
   return (
     <div className="movie-details-page">
@@ -399,7 +411,7 @@ function MovieDetails() {
 
             <div className="movie-details-main">
 
-              {/* Poster */}
+              {/* POSTER */}
 
               <div className="movie-details-poster-wrapper">
 
@@ -419,7 +431,7 @@ function MovieDetails() {
 
               </div>
 
-              {/* Information */}
+              {/* INFORMATION */}
 
               <div className="movie-details-info">
 
@@ -474,12 +486,18 @@ function MovieDetails() {
 
                   <button
                     type="button"
-                    className="details-list-button"
+                    className={
+                      saved
+                        ? "details-list-button saved"
+                        : "details-list-button"
+                    }
                     onClick={
                       handleAddToList
                     }
                   >
-                    ＋ My List
+                    {saved
+                      ? "✓ In My List"
+                      : "＋ My List"}
                   </button>
 
                 </div>
@@ -654,10 +672,6 @@ function MovieDetails() {
         </section>
 
       </main>
-
-      {/* =================================
-          TRAILER MODAL
-      ================================= */}
 
       <TrailerModal
         isOpen={

@@ -1,0 +1,366 @@
+.my-list-page {
+  width: 100%;
+
+  min-height: 100vh;
+
+  background-color: #000000;
+
+  color: #ffffff;
+}
+
+.my-list-main {
+  width: 100%;
+
+  min-height: 70vh;
+
+  padding-top: 85px;
+
+  background-color: #000000;
+}
+
+.my-list-container {
+  width: 100%;
+
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding:
+    50px
+    50px
+    80px;
+}
+
+/* ======================================
+   HEADER
+====================================== */
+
+.my-list-header {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 35px;
+}
+
+.my-list-label {
+  margin: 0 0 7px;
+
+  color: #e50914;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+.my-list-header h1 {
+  margin: 0;
+
+  font-size: 2.4rem;
+
+  line-height: 1.1;
+}
+
+.my-list-count {
+  margin: 10px 0 0;
+
+  color: #888888;
+
+  font-size: 0.9rem;
+}
+
+.clear-list-button {
+  padding:
+    11px
+    18px;
+
+  border:
+    1px solid
+    #3b3b3b;
+
+  border-radius: 5px;
+
+  background-color: #181818;
+
+  color: #ffffff;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.clear-list-button:hover {
+  background-color: #292929;
+
+  border-color: #666666;
+}
+
+/* ======================================
+   EMPTY STATE
+====================================== */
+
+.my-list-empty {
+  min-height: 55vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  padding:
+    40px
+    20px;
+
+  text-align: center;
+}
+
+.my-list-empty-icon {
+  width: 70px;
+
+  height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    2px solid
+    #555555;
+
+  border-radius: 50%;
+
+  color: #aaaaaa;
+
+  font-size: 2rem;
+}
+
+.my-list-empty h2 {
+  margin: 8px 0 0;
+
+  font-size: 1.8rem;
+}
+
+.my-list-empty p {
+  max-width: 520px;
+
+  margin: 0;
+
+  color: #888888;
+
+  line-height: 1.6;
+}
+
+.browse-movies-button {
+  margin-top: 10px;
+
+  padding:
+    12px
+    23px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  background-color: #e50914;
+
+  color: #ffffff;
+
+  font-size: 0.95rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.browse-movies-button:hover {
+  background-color: #f6121d;
+
+  transform: translateY(-2px);
+}
+
+/* ======================================
+   GRID
+====================================== */
+
+.my-list-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(
+        165px,
+        1fr
+      )
+    );
+
+  gap:
+    40px
+    16px;
+}
+
+.my-list-card-wrapper {
+  min-width: 0;
+
+  position: relative;
+}
+
+.my-list-grid
+  .movie-card {
+  width: 100%;
+
+  min-width: 0;
+
+  flex: initial;
+}
+
+.my-list-details-button {
+  width: 100%;
+
+  margin-top: 8px;
+
+  min-height: 36px;
+
+  border:
+    1px solid
+    #383838;
+
+  border-radius: 5px;
+
+  background-color: #181818;
+
+  color: #ffffff;
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.my-list-details-button:hover {
+  background-color: #292929;
+
+  border-color: #666666;
+}
+
+/* ======================================
+   TABLET
+====================================== */
+
+@media (max-width: 900px) {
+  .my-list-container {
+    padding:
+      40px
+      30px
+      60px;
+  }
+
+  .my-list-grid {
+    grid-template-columns:
+      repeat(
+        auto-fill,
+        minmax(
+          145px,
+          1fr
+        )
+      );
+
+    gap:
+      35px
+      12px;
+  }
+
+  .my-list-header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* ======================================
+   MOBILE
+====================================== */
+
+@media (max-width: 600px) {
+  .my-list-main {
+    padding-top: 75px;
+  }
+
+  .my-list-container {
+    padding:
+      30px
+      15px
+      50px;
+  }
+
+  .my-list-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    margin-bottom: 25px;
+  }
+
+  .my-list-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .clear-list-button {
+    width: 100%;
+  }
+
+  .my-list-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap:
+      30px
+      10px;
+  }
+
+  .my-list-empty {
+    min-height: 55vh;
+  }
+
+  .my-list-empty h2 {
+    font-size: 1.5rem;
+  }
+
+  .my-list-empty p {
+    font-size: 0.9rem;
+  }
+}

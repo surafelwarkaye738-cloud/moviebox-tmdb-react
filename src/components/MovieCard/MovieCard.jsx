@@ -4,21 +4,39 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import {
+  useMyList,
+} from "../../context/MyListContext";
+
 import "./MovieCard.css";
 
 function MovieCard({
   movie,
   onPlay,
-  onAddToList,
 }) {
   /*
-    React Router navigation.
+    Navigation.
   */
   const navigate =
     useNavigate();
 
   /*
-    Open the movie details page.
+    My List state and actions.
+  */
+  const {
+    isInMyList,
+    toggleMyList,
+  } = useMyList();
+
+  /*
+    Check whether this movie
+    is currently saved.
+  */
+  const saved =
+    isInMyList(movie.id);
+
+  /*
+    Open movie details.
   */
   const openDetails = () => {
     navigate(
@@ -27,11 +45,15 @@ function MovieCard({
   };
 
   /*
-    Handle Play.
+    Play movie.
   */
   const handlePlay = (
     event
   ) => {
+    /*
+      Don't also trigger
+      the card click.
+    */
     event.stopPropagation();
 
     if (onPlay) {
@@ -40,23 +62,19 @@ function MovieCard({
   };
 
   /*
-    Handle My List.
+    Add or remove movie
+    from My List.
   */
-  const handleAddToList = (
+  const handleMyList = (
     event
   ) => {
     event.stopPropagation();
 
-    if (onAddToList) {
-      onAddToList(
-        movie,
-        true
-      );
-    }
+    toggleMyList(movie);
   };
 
   /*
-    Handle keyboard navigation.
+    Keyboard support.
   */
   const handleKeyDown = (
     event
@@ -102,12 +120,14 @@ function MovieCard({
         )}
 
         {/* =================================
-            HOVER OVERLAY
+            OVERLAY
         ================================= */}
 
         <div className="movie-card-overlay">
 
           <div className="movie-card-actions">
+
+            {/* PLAY */}
 
             <button
               type="button"
@@ -122,17 +142,25 @@ function MovieCard({
               ▶
             </button>
 
+            {/* MY LIST */}
+
             <button
               type="button"
-              className="movie-card-add-button"
+              className={
+                saved
+                  ? "movie-card-add-button saved"
+                  : "movie-card-add-button"
+              }
               onClick={
-                handleAddToList
+                handleMyList
               }
               aria-label={
-                `Add ${movie.title} to My List`
+                saved
+                  ? `Remove ${movie.title} from My List`
+                  : `Add ${movie.title} to My List`
               }
             >
-              ＋
+              {saved ? "✓" : "＋"}
             </button>
 
           </div>
@@ -154,7 +182,7 @@ function MovieCard({
       </div>
 
       {/* =================================
-          MOVIE INFORMATION
+          INFORMATION
       ================================= */}
 
       <div className="movie-card-info">
