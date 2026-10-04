@@ -1,0 +1,469 @@
+.credits-page {
+  width: 100%;
+
+  min-height: 100vh;
+
+  background-color: #000000;
+
+  color: #ffffff;
+}
+
+.credits-main {
+  width: 100%;
+
+  min-height: 80vh;
+
+  padding-top: 90px;
+
+  background-color: #000000;
+}
+
+.credits-container {
+  width: 100%;
+
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding:
+    50px
+    40px
+    80px;
+}
+
+/* =====================================
+   HERO
+===================================== */
+
+.credits-hero {
+  max-width: 850px;
+
+  margin-bottom: 45px;
+}
+
+.credits-eyebrow {
+  margin: 0 0 8px;
+
+  color: #e50914;
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1.2px;
+}
+
+.credits-hero h1 {
+  margin: 0;
+
+  font-size: clamp(
+    2.2rem,
+    5vw,
+    4rem
+  );
+
+  line-height: 1.05;
+}
+
+.credits-introduction {
+  max-width: 760px;
+
+  margin: 20px 0 0;
+
+  color: #999999;
+
+  font-size: 1rem;
+
+  line-height: 1.8;
+}
+
+/* =====================================
+   SECTION
+===================================== */
+
+.credits-section {
+  margin-top: 20px;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    #222222;
+
+  border-radius: 9px;
+
+  background-color: #101010;
+}
+
+.credits-section-heading {
+  margin-bottom: 25px;
+}
+
+.credits-section-heading p {
+  margin: 0 0 7px;
+
+  color: #e50914;
+
+  font-size: 0.67rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+.credits-section-heading h2 {
+  margin: 0;
+
+  font-size: 1.5rem;
+}
+
+/* =====================================
+   INFORMATION GRID
+===================================== */
+
+.credits-information-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap: 12px;
+}
+
+.credits-information-card {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  padding:
+    17px;
+
+  border-radius: 6px;
+
+  background-color: #181818;
+}
+
+.credits-information-card span {
+  color: #777777;
+
+  font-size: 0.72rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.6px;
+}
+
+.credits-information-card strong {
+  color: #ffffff;
+
+  font-size: 0.9rem;
+}
+
+/* =====================================
+   TMDB CARD
+===================================== */
+
+.tmdb-credit-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 35px;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    #292929;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #181818,
+      #111111
+    );
+}
+
+.tmdb-logo-wrapper {
+  flex-shrink: 0;
+
+  width: 190px;
+
+  min-height: 90px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  border-radius: 7px;
+
+  background-color: #ffffff;
+}
+
+.tmdb-logo {
+  display: block;
+
+  width: 100%;
+
+  max-width: 150px;
+
+  height: auto;
+
+  object-fit: contain;
+}
+
+.tmdb-credit-content {
+  flex: 1;
+}
+
+.tmdb-credit-content h3 {
+  margin: 0;
+
+  font-size: 1.4rem;
+}
+
+.tmdb-credit-content p {
+  max-width: 700px;
+
+  margin:
+    12px
+    0
+    0;
+
+  color: #999999;
+
+  font-size: 0.9rem;
+
+  line-height: 1.7;
+}
+
+.tmdb-required-notice {
+  color: #dddddd !important;
+
+  font-weight: 600;
+}
+
+.tmdb-website-link {
+  display: inline-block;
+
+  margin-top: 15px;
+
+  color: #ffffff;
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease;
+}
+
+.tmdb-website-link:hover {
+  color: #e50914;
+}
+
+/* =====================================
+   DISCLAIMER
+===================================== */
+
+.credits-disclaimer h2 {
+  margin: 0;
+
+  font-size: 1.35rem;
+}
+
+.credits-disclaimer p {
+  max-width: 850px;
+
+  margin:
+    14px
+    0
+    0;
+
+  color: #999999;
+
+  font-size: 0.9rem;
+
+  line-height: 1.75;
+}
+
+/* =====================================
+   NAVIGATION
+===================================== */
+
+.credits-navigation {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 28px;
+}
+
+.credits-primary-button,
+.credits-secondary-button {
+  min-height: 44px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    0
+    20px;
+
+  border-radius: 5px;
+
+  font-size: 0.85rem;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.credits-primary-button {
+  background-color: #e50914;
+
+  color: #ffffff;
+}
+
+.credits-primary-button:hover {
+  background-color: #f6121d;
+
+  transform: translateY(-1px);
+}
+
+.credits-secondary-button {
+  border:
+    1px solid
+    #3b3b3b;
+
+  background-color: #181818;
+
+  color: #ffffff;
+}
+
+.credits-secondary-button:hover {
+  background-color: #252525;
+
+  transform: translateY(-1px);
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 800px) {
+  .credits-container {
+    padding:
+      40px
+      25px
+      60px;
+  }
+
+  .credits-information-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+  .tmdb-credit-card {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .tmdb-logo-wrapper {
+    width: 170px;
+  }
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+  .credits-main {
+    padding-top: 75px;
+  }
+
+  .credits-container {
+    padding:
+      30px
+      15px
+      50px;
+  }
+
+  .credits-section {
+    padding: 20px;
+  }
+
+  .credits-hero h1 {
+    font-size: 2rem;
+  }
+
+  .credits-introduction {
+    font-size: 0.9rem;
+  }
+
+  .credits-information-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tmdb-credit-card {
+    padding: 20px;
+  }
+
+  .tmdb-logo-wrapper {
+    width: 150px;
+
+    min-height: 75px;
+  }
+
+  .tmdb-credit-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .credits-navigation {
+    flex-direction: column;
+  }
+
+  .credits-primary-button,
+  .credits-secondary-button {
+    width: 100%;
+  }
+}

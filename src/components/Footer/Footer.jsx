@@ -1,152 +1,22 @@
 import React from "react";
 
+import {
+  Link,
+} from "react-router-dom";
+
 import "./Footer.css";
 
 function Footer() {
+  /*
+    Get the current year dynamically.
+  */
+  const currentYear =
+    new Date().getFullYear();
+
   return (
-    <footer className="netflix-footer">
+    <footer className="footer">
 
       <div className="footer-container">
-
-
-        {/* =================================
-            CONTACT
-        ================================= */}
-
-        <div className="footer-contact">
-
-          <p>
-            Questions? Contact us.
-          </p>
-
-        </div>
-
-
-        {/* =================================
-            FOOTER LINKS
-        ================================= */}
-
-        <div className="footer-links">
-
-
-          {/* Column 1 */}
-
-          <div className="footer-column">
-
-            <a href="#faq">
-              FAQ
-            </a>
-
-            <a href="#investor-relations">
-              Investor Relations
-            </a>
-
-            <a href="#privacy">
-              Privacy
-            </a>
-
-            <a href="#speed-test">
-              Speed Test
-            </a>
-
-          </div>
-
-
-          {/* Column 2 */}
-
-          <div className="footer-column">
-
-            <a href="#help-center">
-              Help Center
-            </a>
-
-            <a href="#jobs">
-              Jobs
-            </a>
-
-            <a href="#cookie-preferences">
-              Cookie Preferences
-            </a>
-
-            <a href="#legal-notices">
-              Legal Notices
-            </a>
-
-          </div>
-
-
-          {/* Column 3 */}
-
-          <div className="footer-column">
-
-            <a href="#account">
-              Account
-            </a>
-
-            <a href="#ways-to-watch">
-              Ways to Watch
-            </a>
-
-            <a href="#corporate-information">
-              Corporate Information
-            </a>
-
-            <a href="#only-on-netflix">
-              Only on Netflix
-            </a>
-
-          </div>
-
-
-          {/* Column 4 */}
-
-          <div className="footer-column">
-
-            <a href="#media-center">
-              Media Center
-            </a>
-
-            <a href="#terms">
-              Terms of Use
-            </a>
-
-            <a href="#contact-us">
-              Contact Us
-            </a>
-
-            <a href="#accessibility">
-              Accessibility
-            </a>
-
-          </div>
-
-        </div>
-
-
-        {/* =================================
-            LANGUAGE
-        ================================= */}
-
-        <div className="footer-language">
-
-          <select
-            className="language-select"
-            defaultValue="English"
-            aria-label="Select language"
-          >
-
-            <option value="English">
-              English
-            </option>
-
-            <option value="Amharic">
-              Amharic
-            </option>
-
-          </select>
-
-        </div>
-
 
         {/* =================================
             BRAND
@@ -154,16 +24,108 @@ function Footer() {
 
         <div className="footer-brand">
 
-          <p className="footer-logo">
+          <Link
+            to="/"
+            className="footer-logo"
+          >
             NETFLIX
+          </Link>
+
+          <p>
+            A React-based educational
+            movie discovery application
+            powered by TMDB.
           </p>
 
-          <p className="footer-country">
-            Netflix Clone
+        </div>
+
+        {/* =================================
+            NAVIGATION
+        ================================= */}
+
+        <div className="footer-column">
+
+          <h3>
+            Explore
+          </h3>
+
+          <Link to="/">
+            Home
+          </Link>
+
+          <Link to="/search">
+            Search Movies
+          </Link>
+
+          <Link to="/my-list">
+            My List
+          </Link>
+
+        </div>
+
+        {/* =================================
+            ACCOUNT
+        ================================= */}
+
+        <div className="footer-column">
+
+          <h3>
+            Account
+          </h3>
+
+          <Link to="/profile">
+            Profile
+          </Link>
+
+          <Link to="/login">
+            Sign In
+          </Link>
+
+        </div>
+
+        {/* =================================
+            INFORMATION
+        ================================= */}
+
+        <div className="footer-column">
+
+          <h3>
+            Information
+          </h3>
+
+          <Link to="/credits">
+            Credits & Attribution
+          </Link>
+
+          <a
+            href="https://www.themoviedb.org/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            TMDB
+          </a>
+
+        </div>
+
+      </div>
+
+      {/* =================================
+          BOTTOM
+      ================================= */}
+
+      <div className="footer-bottom">
+
+        <div className="footer-bottom-container">
+
+          <p>
+            © {currentYear} Netflix Clone.
+            Educational portfolio project.
           </p>
 
-          <p className="footer-description">
-            A React educational streaming project.
+          <p>
+            This product uses the TMDB API
+            but is not endorsed or certified
+            by TMDB.
           </p>
 
         </div>

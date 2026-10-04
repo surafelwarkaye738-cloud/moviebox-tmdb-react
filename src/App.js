@@ -7,12 +7,12 @@ import {
 } from "react-router-dom";
 
 import {
-  MyListProvider,
-} from "./context/MyListContext";
-
-import {
   AuthProvider,
 } from "./context/AuthContext";
+
+import {
+  MyListProvider,
+} from "./context/MyListContext";
 
 import Home from "./pages/Home/Home";
 
@@ -25,6 +25,8 @@ import MyList from "./pages/MyList/MyList";
 import Login from "./pages/Login/Login";
 
 import Profile from "./pages/Profile/Profile";
+
+import Credits from "./pages/Credits/Credits";
 
 import "./App.css";
 
@@ -78,6 +80,13 @@ function App() {
             <Route
               path="/profile"
               element={<Profile />}
+            />
+
+            {/* CREDITS */}
+
+            <Route
+              path="/credits"
+              element={<Credits />}
             />
 
           </Routes>
