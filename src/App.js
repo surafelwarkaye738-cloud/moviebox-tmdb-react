@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
+import Search from "./pages/search/search";
 import MovieDetails from "./pages/MovieDetails/MovieDetails";
 
 import "./App.css";
@@ -14,21 +15,29 @@ import "./App.css";
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
 
-        {/* Home Page */}
+        {/* Home */}
         <Route
           path="/"
           element={<Home />}
         />
 
-        {/* Movie Details Page */}
+        {/* Search */}
+        <Route
+          path="/search"
+          element={<Search />}
+        />
+
+        {/* Movie Details */}
         <Route
           path="/movie/:movieId"
           element={<MovieDetails />}
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }

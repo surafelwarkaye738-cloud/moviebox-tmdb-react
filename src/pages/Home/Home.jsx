@@ -3,10 +3,15 @@ import React, {
   useState,
 } from "react";
 
+import {
+  useNavigate,
+} from "react-router-dom";
+
 import Header from "../../components/Header/Header";
 import Hero from "../../components/Hero/Hero";
 import MovieRow from "../../components/MovieRow/MovieRow";
 import Footer from "../../components/Footer/Footer";
+import TrailerModal from "../../components/TrailerModal/TrailerModal";
 
 import {
   getTrendingMovies,
@@ -16,6 +21,7 @@ import {
   getUpcomingMovies,
   getPosterUrl,
   getBackdropUrl,
+  getMovieTrailer,
 } from "../../services/tmdbApi";
 
 import {
@@ -26,79 +32,77 @@ import "./Home.css";
 
 function Home() {
   /*
-    Featured movie displayed
-    in the Hero section.
+    Navigation.
+  */
+  const navigate =
+    useNavigate();
+
+  /*
+    Hero movie.
   */
   const [featuredMovie, setFeaturedMovie] =
     useState(null);
 
   /*
-    Trending today.
+    Movie categories.
   */
   const [trendingToday, setTrendingToday] =
     useState([]);
 
-  /*
-    Trending this week.
-  */
   const [trendingThisWeek, setTrendingThisWeek] =
     useState([]);
 
-  /*
-    Popular movies.
-  */
   const [popularMovies, setPopularMovies] =
     useState([]);
 
-  /*
-    Top-rated movies.
-  */
   const [topRatedMovies, setTopRatedMovies] =
     useState([]);
 
-  /*
-    Movies currently playing.
-  */
   const [nowPlayingMovies, setNowPlayingMovies] =
     useState([]);
 
-  /*
-    Upcoming movies.
-  */
   const [upcomingMovies, setUpcomingMovies] =
     useState([]);
 
   /*
-    Loading state.
+    Main loading state.
   */
   const [loading, setLoading] =
     useState(true);
 
   /*
-    Error message.
+    Main error.
   */
   const [error, setError] =
     useState("");
 
   /*
-    Load all movie categories.
+    Trailer modal state.
+  */
+  const [isTrailerOpen, setIsTrailerOpen] =
+    useState(false);
+
+  const [selectedTrailer, setSelectedTrailer] =
+    useState(null);
+
+  const [trailerTitle, setTrailerTitle] =
+    useState("");
+
+  const [trailerLoading, setTrailerLoading] =
+    useState(false);
+
+  const [trailerError, setTrailerError] =
+    useState("");
+
+  /*
+    Load movie categories.
   */
   const loadMovies = async () => {
     try {
-      /*
-        Start loading.
-      */
       setLoading(true);
 
-      /*
-        Clear old errors.
-      */
       setError("");
 
-      /*
-        Request all categories
-        at the same time.
-      */
       const [
         trendingTodayData,
         trendingThisWeekData,
@@ -120,10 +124,6 @@ function Home() {
         getUpcomingMovies(),
       ]);
 
-      /*
-        Convert raw TMDB arrays
-        into our application format.
-      */
       const trendingTodayMovies =
         mapMovies(
           trendingTodayData.results,
@@ -166,9 +166,6 @@ function Home() {
           getBackdropUrl
         );
 
-      /*
-        Save everything into state.
-      */
       setTrendingToday(
         trendingTodayMovies
       );
@@ -194,8 +191,8 @@ function Home() {
       );
 
       /*
-        Use the first trending movie
-        as the main Hero movie.
+        First trending movie becomes
+        the Hero movie.
       */
       if (
         trendingTodayMovies.length >
@@ -216,41 +213,113 @@ function Home() {
           "Unable to load movies from TMDB."
       );
     } finally {
-      /*
-        Loading ends whether
-        request succeeded or failed.
-      */
       setLoading(false);
     }
   };
 
   /*
-    Load movies when the page starts.
+    Load movies on page start.
   */
   useEffect(() => {
     loadMovies();
   }, []);
 
   /*
-    Play movie.
+    Play movie trailer.
   */
-  const handlePlay = (movie) => {
-    console.log(
-      `Playing movie: ${movie.title}`
+  const handlePlay = async (
+    movie
+  ) => {
+    try {
+      /*
+        Open modal immediately
+        so the user sees feedback.
+      */
+      setIsTrailerOpen(true);
+
+      setTrailerTitle(
+        movie.title
+      );
+
+      setSelectedTrailer(
+        null
+      );
+
+      setTrailerError("");
+
+      setTrailerLoading(true);
+
+      /*
+        Fetch best trailer.
+      */
+      const trailer =
+        await getMovieTrailer(
+          movie.id
+        );
+
+      if (!trailer) {
+        setTrailerError(
+          "No trailer is available for this movie."
+        );
+
+        return;
+      }
+
+      setSelectedTrailer(
+        trailer
+      );
+    } catch (error) {
+      console.error(
+        "Failed to load trailer:",
+        error
+      );
+
+      setTrailerError(
+        error.message ||
+          "Unable to load the movie trailer."
+      );
+    } finally {
+      setTrailerLoading(
+        false
+      );
+    }
+  };
+
+  /*
+    Close trailer modal.
+  */
+  const handleCloseTrailer =
+    () => {
+      setIsTrailerOpen(false);
+
+      setSelectedTrailer(
+        null
+      );
+
+      setTrailerTitle("");
+
+      setTrailerError("");
+
+      setTrailerLoading(
+        false
+      );
+    };
+
+  /*
+    Open details page.
+  */
+  const handleMoreInfo = (
+    movie
+  ) => {
+    navigate(
+      `/movie/${movie.id}`
     );
   };
 
   /*
-    More information.
-  */
-  const handleMoreInfo = (movie) => {
-    console.log(
-      `More information: ${movie.title}`
-    );
-  };
-
-  /*
-    Add/remove movie from My List.
+    My List placeholder.
+    Real My List comes in
+    the next phase.
   */
   const handleAddToList = (
     movie,
@@ -274,9 +343,6 @@ function Home() {
 
       <main className="home-main">
 
-        {/*
-          Loading UI.
-        */}
         {loading && (
           <div className="home-loading">
 
@@ -289,34 +355,29 @@ function Home() {
           </div>
         )}
 
-        {/*
-          Error UI.
-        */}
-        {!loading && error && (
-          <div className="home-error">
+        {!loading &&
+          error && (
+            <div className="home-error">
 
-            <h2>
-              Something went wrong
-            </h2>
+              <h2>
+                Something went wrong
+              </h2>
 
-            <p>
-              {error}
-            </p>
+              <p>
+                {error}
+              </p>
 
-            <button
-              type="button"
-              onClick={loadMovies}
-              className="retry-button"
-            >
-              Try Again
-            </button>
+              <button
+                type="button"
+                onClick={loadMovies}
+                className="retry-button"
+              >
+                Try Again
+              </button>
 
-          </div>
-        )}
+            </div>
+          )}
 
-        {/*
-          Main movie interface.
-        */}
         {!loading &&
           !error &&
           featuredMovie && (
@@ -337,7 +398,9 @@ function Home() {
                   movies={
                     trendingToday
                   }
-                  onPlay={handlePlay}
+                  onPlay={
+                    handlePlay
+                  }
                   onAddToList={
                     handleAddToList
                   }
@@ -348,7 +411,9 @@ function Home() {
                   movies={
                     trendingThisWeek
                   }
-                  onPlay={handlePlay}
+                  onPlay={
+                    handlePlay
+                  }
                   onAddToList={
                     handleAddToList
                   }
@@ -359,7 +424,9 @@ function Home() {
                   movies={
                     popularMovies
                   }
-                  onPlay={handlePlay}
+                  onPlay={
+                    handlePlay
+                  }
                   onAddToList={
                     handleAddToList
                   }
@@ -370,7 +437,9 @@ function Home() {
                   movies={
                     topRatedMovies
                   }
-                  onPlay={handlePlay}
+                  onPlay={
+                    handlePlay
+                  }
                   onAddToList={
                     handleAddToList
                   }
@@ -381,7 +450,9 @@ function Home() {
                   movies={
                     nowPlayingMovies
                   }
-                  onPlay={handlePlay}
+                  onPlay={
+                    handlePlay
+                  }
                   onAddToList={
                     handleAddToList
                   }
@@ -392,7 +463,9 @@ function Home() {
                   movies={
                     upcomingMovies
                   }
-                  onPlay={handlePlay}
+                  onPlay={
+                    handlePlay
+                  }
                   onAddToList={
                     handleAddToList
                   }
@@ -404,6 +477,27 @@ function Home() {
           )}
 
       </main>
+
+      <TrailerModal
+        isOpen={
+          isTrailerOpen
+        }
+        video={
+          selectedTrailer
+        }
+        title={
+          trailerTitle
+        }
+        loading={
+          trailerLoading
+        }
+        error={
+          trailerError
+        }
+        onClose={
+          handleCloseTrailer
+        }
+      />
 
       <Footer />
 

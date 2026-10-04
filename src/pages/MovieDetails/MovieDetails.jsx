@@ -10,6 +10,7 @@ import {
 
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
+import TrailerModal from "../../components/TrailerModal/TrailerModal";
 
 import {
   getMovieDetails,
@@ -17,69 +18,72 @@ import {
   getBackdropUrl,
 } from "../../services/tmdbApi";
 
+import {
+  findBestTrailer,
+} from "../../utils/movieTrailer";
+
 import "./MovieDetails.css";
 
 function MovieDetails() {
   /*
-    Get movieId from the URL.
+    Get movie ID from URL.
   */
   const { movieId } =
     useParams();
 
   /*
-    Navigation helper.
+    Router navigation.
   */
   const navigate =
     useNavigate();
 
   /*
-    Movie state.
+    Movie data.
   */
   const [movie, setMovie] =
     useState(null);
 
   /*
-    Loading state.
+    Page loading.
   */
   const [loading, setLoading] =
     useState(true);
 
   /*
-    Error state.
+    Page error.
   */
   const [error, setError] =
     useState("");
 
   /*
-    Load movie details.
+    Trailer modal.
+  */
+  const [isTrailerOpen, setIsTrailerOpen] =
+    useState(false);
+
+  const [selectedTrailer, setSelectedTrailer] =
+    useState(null);
+
+  const [trailerError, setTrailerError] =
+    useState("");
+
+  /*
+    Load details.
   */
   useEffect(() => {
     const loadMovieDetails =
       async () => {
         try {
-          /*
-            Start loading.
-          */
           setLoading(true);
 
-          /*
-            Clear previous error.
-          */
           setError("");
 
-          /*
-            Request movie from TMDB.
-          */
           const data =
             await getMovieDetails(
               movieId
             );
 
-          /*
-            Save movie.
-          */
           setMovie(data);
-
         } catch (error) {
           console.error(
             "Failed to load movie details:",
@@ -90,11 +94,7 @@ function MovieDetails() {
             error.message ||
               "Unable to load movie details."
           );
-
         } finally {
-          /*
-            Stop loading.
-          */
           setLoading(false);
         }
       };
@@ -113,7 +113,9 @@ function MovieDetails() {
     }
 
     const hours =
-      Math.floor(runtime / 60);
+      Math.floor(
+        runtime / 60
+      );
 
     const minutes =
       runtime % 60;
@@ -126,10 +128,69 @@ function MovieDetails() {
   };
 
   /*
-    Go back to Home.
+    Return Home.
   */
   const handleBack = () => {
     navigate("/");
+  };
+
+  /*
+    Play movie trailer.
+  */
+  const handlePlay = () => {
+    /*
+      Get all videos returned
+      by movie details endpoint.
+    */
+    const videos =
+      movie?.videos?.results ||
+      [];
+
+    /*
+      Find best trailer.
+    */
+    const trailer =
+      findBestTrailer(
+        videos
+      );
+
+    /*
+      Open the modal.
+    */
+    setIsTrailerOpen(true);
+
+    setSelectedTrailer(
+      trailer
+    );
+
+    setTrailerError(
+      trailer
+        ? ""
+        : "No trailer is available for this movie."
+    );
+  };
+
+  /*
+    Close trailer modal.
+  */
+  const handleCloseTrailer =
+    () => {
+      setIsTrailerOpen(false);
+
+      setSelectedTrailer(
+        null
+      );
+
+      setTrailerError("");
+    };
+
+  /*
+    Temporary My List action.
+  */
+  const handleAddToList = () => {
+    console.log(
+      `Add "${movie?.title}" to My List`
+    );
   };
 
   /*
@@ -179,7 +240,9 @@ function MovieDetails() {
           <button
             type="button"
             className="details-back-button"
-            onClick={handleBack}
+            onClick={
+              handleBack
+            }
           >
             Back to Home
           </button>
@@ -193,7 +256,7 @@ function MovieDetails() {
   }
 
   /*
-    Movie does not exist.
+    No movie.
   */
   if (!movie) {
     return (
@@ -210,7 +273,9 @@ function MovieDetails() {
           <button
             type="button"
             className="details-back-button"
-            onClick={handleBack}
+            onClick={
+              handleBack
+            }
           >
             Back to Home
           </button>
@@ -224,7 +289,7 @@ function MovieDetails() {
   }
 
   /*
-    Build image URLs.
+    Build backdrop URL.
   */
   const backdropUrl =
     getBackdropUrl(
@@ -232,6 +297,9 @@ function MovieDetails() {
       "original"
     );
 
+  /*
+    Build poster URL.
+  */
   const posterUrl =
     getPosterUrl(
       movie.poster_path,
@@ -239,7 +307,7 @@ function MovieDetails() {
     );
 
   /*
-    Get release year.
+    Release year.
   */
   const releaseYear =
     movie.release_date
@@ -250,7 +318,7 @@ function MovieDetails() {
       : "N/A";
 
   /*
-    Format rating.
+    Rating.
   */
   const rating =
     typeof movie.vote_average ===
@@ -259,7 +327,7 @@ function MovieDetails() {
       : "N/A";
 
   /*
-    Get genre names.
+    Genres.
   */
   const genres =
     movie.genres?.length
@@ -272,7 +340,7 @@ function MovieDetails() {
       : "Movie";
 
   /*
-    Get first six cast members.
+    Cast.
   */
   const cast =
     movie.credits?.cast
@@ -281,48 +349,6 @@ function MovieDetails() {
           6
         )
       : [];
-
-  /*
-    Find a trailer.
-  */
-  const trailer =
-    movie.videos?.results?.find(
-      (video) =>
-        video.site === "YouTube" &&
-        video.type === "Trailer"
-    );
-
-  /*
-    Open trailer.
-  */
-  const handlePlay = () => {
-    if (trailer?.key) {
-      window.open(
-        `https://www.youtube.com/watch?v=${trailer.key}`,
-        "_blank",
-        "noopener,noreferrer"
-      );
-
-      return;
-    }
-
-    console.log(
-      "No trailer available for:",
-      movie.title
-    );
-  };
-
-  /*
-    Add to My List.
-    This is temporary.
-    We will build the real My List
-    system in a later phase.
-  */
-  const handleAddToList = () => {
-    console.log(
-      `Add "${movie.title}" to My List`
-    );
-  };
 
   return (
     <div className="movie-details-page">
@@ -361,28 +387,28 @@ function MovieDetails() {
 
           <div className="movie-details-content">
 
-            {/* Back button */}
-
             <button
               type="button"
               className="back-button"
-              onClick={handleBack}
+              onClick={
+                handleBack
+              }
             >
               ← Back
             </button>
 
             <div className="movie-details-main">
 
-              {/* =================================
-                  POSTER
-              ================================= */}
+              {/* Poster */}
 
               <div className="movie-details-poster-wrapper">
 
                 {posterUrl ? (
                   <img
                     src={posterUrl}
-                    alt={movie.title}
+                    alt={
+                      movie.title
+                    }
                     className="movie-details-poster"
                   />
                 ) : (
@@ -393,9 +419,7 @@ function MovieDetails() {
 
               </div>
 
-              {/* =================================
-                  INFORMATION
-              ================================= */}
+              {/* Information */}
 
               <div className="movie-details-info">
 
@@ -441,9 +465,11 @@ function MovieDetails() {
                   <button
                     type="button"
                     className="details-play-button"
-                    onClick={handlePlay}
+                    onClick={
+                      handlePlay
+                    }
                   >
-                    ▶ Play
+                    ▶ Play Trailer
                   </button>
 
                   <button
@@ -628,6 +654,29 @@ function MovieDetails() {
         </section>
 
       </main>
+
+      {/* =================================
+          TRAILER MODAL
+      ================================= */}
+
+      <TrailerModal
+        isOpen={
+          isTrailerOpen
+        }
+        video={
+          selectedTrailer
+        }
+        title={
+          movie.title
+        }
+        loading={false}
+        error={
+          trailerError
+        }
+        onClose={
+          handleCloseTrailer
+        }
+      />
 
       <Footer />
 

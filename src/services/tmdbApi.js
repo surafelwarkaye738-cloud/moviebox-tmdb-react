@@ -5,40 +5,73 @@ import {
   TMDB_IMAGE_BASE_URL,
 } from "../config/api";
 
+import {
+  findBestTrailer,
+} from "../utils/movieTrailer";
+
+/*
+  Main TMDB request helper.
+*/
 const createRequest = async (
   endpoint,
   params = {}
 ) => {
+  /*
+    Check token.
+  */
   if (!TMDB_API_TOKEN) {
     throw new Error(
-      "TMDB API token is missing. Add REACT_APP_TMDB_API_TOKEN to .env.local and restart the React app."
+      "TMDB API token is missing. Check .env.local in the project root and restart the React app."
     );
   }
 
+  /*
+    Remove accidental spaces.
+  */
+  const cleanToken =
+    TMDB_API_TOKEN.trim();
+
+  /*
+    Create API URL.
+  */
   const url = new URL(
     `${TMDB_BASE_URL}${endpoint}`
   );
 
-  const searchParams = new URLSearchParams({
-    language: TMDB_DEFAULT_LANGUAGE,
-    ...params,
-  });
+  /*
+    Add query parameters.
+  */
+  const searchParams =
+    new URLSearchParams({
+      language:
+        TMDB_DEFAULT_LANGUAGE,
+      ...params,
+    });
 
-  url.search = searchParams.toString();
+  url.search =
+    searchParams.toString();
 
+  /*
+    Send request.
+  */
   const response = await fetch(
     url.toString(),
     {
       method: "GET",
 
       headers: {
-        accept: "application/json",
+        accept:
+          "application/json",
 
-        Authorization: `Bearer ${TMDB_API_TOKEN}`,
+        Authorization:
+          `Bearer ${cleanToken}`,
       },
     }
   );
 
+  /*
+    Handle errors.
+  */
   if (!response.ok) {
     let errorMessage =
       `TMDB request failed with status ${response.status}.`;
@@ -47,26 +80,35 @@ const createRequest = async (
       const errorData =
         await response.json();
 
-      if (errorData.status_message) {
+      if (
+        errorData.status_message
+      ) {
         errorMessage +=
           ` ${errorData.status_message}`;
       }
     } catch {
-      // Ignore JSON parsing errors.
+      /*
+        Ignore JSON parsing errors.
+      */
     }
 
-    throw new Error(errorMessage);
+    throw new Error(
+      errorMessage
+    );
   }
 
+  /*
+    Return parsed JSON.
+  */
   return response.json();
 };
 
 /*
-  Get trending movies.
+  Trending movies.
 
-  timeWindow can be:
-  "day"
-  "week"
+  timeWindow:
+  day
+  week
 */
 export const getTrendingMovies = (
   timeWindow = "day"
@@ -76,34 +118,40 @@ export const getTrendingMovies = (
   );
 
 /*
-  Get popular movies.
+  Popular movies.
 */
-export const getPopularMovies = () =>
-  createRequest("/movie/popular");
+export const getPopularMovies =
+  () =>
+    createRequest(
+      "/movie/popular"
+    );
 
 /*
-  Get top-rated movies.
+  Top-rated movies.
 */
-export const getTopRatedMovies = () =>
-  createRequest(
-    "/movie/top_rated"
-  );
+export const getTopRatedMovies =
+  () =>
+    createRequest(
+      "/movie/top_rated"
+    );
 
 /*
-  Get movies currently playing.
+  Now-playing movies.
 */
-export const getNowPlayingMovies = () =>
-  createRequest(
-    "/movie/now_playing"
-  );
+export const getNowPlayingMovies =
+  () =>
+    createRequest(
+      "/movie/now_playing"
+    );
 
 /*
-  Get upcoming movies.
+  Upcoming movies.
 */
-export const getUpcomingMovies = () =>
-  createRequest(
-    "/movie/upcoming"
-  );
+export const getUpcomingMovies =
+  () =>
+    createRequest(
+      "/movie/upcoming"
+    );
 
 /*
   Search movies.
@@ -122,7 +170,11 @@ export const searchMovies = (
   );
 
 /*
-  Get complete movie details.
+  Movie details.
+
+  Also request:
+  videos
+  credits
 */
 export const getMovieDetails = (
   movieId
@@ -136,7 +188,7 @@ export const getMovieDetails = (
   );
 
 /*
-  Get movie videos.
+  Movie videos.
 */
 export const getMovieVideos = (
   movieId
@@ -144,6 +196,24 @@ export const getMovieVideos = (
   createRequest(
     `/movie/${movieId}/videos`
   );
+
+/*
+  Get the best available
+  trailer for a movie.
+*/
+export const getMovieTrailer =
+  async (
+    movieId
+  ) => {
+    const data =
+      await getMovieVideos(
+        movieId
+      );
+
+    return findBestTrailer(
+      data.results || []
+    );
+  };
 
 /*
   Build poster URL.

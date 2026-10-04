@@ -1,245 +1,200 @@
-import React, { useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import "./Header.css";
 
 function Header() {
-  // Controls whether the search box is visible
-  const [searchOpen, setSearchOpen] = useState(false);
+  /*
+    Navigation helper.
+  */
+  const navigate =
+    useNavigate();
 
-  // Controls the mobile navigation
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  /*
+    Current URL information.
+  */
+  const location =
+    useLocation();
+
+  /*
+    Search input state.
+  */
+  const [searchText, setSearchText] =
+    useState("");
+
+  /*
+    When the URL changes,
+    update the search box if
+    a query exists.
+  */
+  useEffect(() => {
+    const params =
+      new URLSearchParams(
+        location.search
+      );
+
+    const query =
+      params.get("query") || "";
+
+    setSearchText(query);
+  }, [location.search]);
+
+  /*
+    Submit search.
+  */
+  const handleSearchSubmit = (
+    event
+  ) => {
+    /*
+      Prevent page refresh.
+    */
+    event.preventDefault();
+
+    /*
+      Remove unnecessary spaces.
+    */
+    const query =
+      searchText.trim();
+
+    /*
+      Don't search an empty string.
+    */
+    if (!query) {
+      return;
+    }
+
+    /*
+      Open Search page.
+
+      Example:
+
+      /search?query=Spider-Man
+    */
+    navigate(
+      `/search?query=${encodeURIComponent(
+        query
+      )}&page=1`
+    );
+  };
+
+  /*
+    Clear the search input.
+  */
+  const handleClearSearch = () => {
+    setSearchText("");
+
+    /*
+      If we are currently on
+      the search page, go back home.
+    */
+    if (
+      location.pathname ===
+      "/search"
+    ) {
+      navigate("/");
+    }
+  };
 
   return (
-    <header className="netflix-header">
+    <header className="header">
 
-      {/* =========================
-          LEFT SIDE
-      ========================== */}
+      <div className="header-container">
 
-      <div className="header-left">
+        {/* =================================
+            LOGO
+        ================================= */}
 
-        {/* Logo */}
-
-        <a
-          href="#home"
-          className="netflix-logo"
-          aria-label="Netflix home"
+        <Link
+          to="/"
+          className="header-logo"
+          aria-label="Netflix Clone Home"
         >
           NETFLIX
-        </a>
+        </Link>
 
+        {/* =================================
+            NAVIGATION
+        ================================= */}
 
-        {/* Desktop Navigation */}
+        <nav
+          className="header-nav"
+          aria-label="Main navigation"
+        >
 
-        <nav className="desktop-navigation">
-
-          <a
-            href="#home"
-            className="navigation-link active"
+          <Link
+            to="/"
+            className={
+              location.pathname === "/"
+                ? "header-nav-link active"
+                : "header-nav-link"
+            }
           >
             Home
-          </a>
-
-          <a
-            href="#tv-shows"
-            className="navigation-link"
-          >
-            TV Shows
-          </a>
-
-          <a
-            href="#movies"
-            className="navigation-link"
-          >
-            Movies
-          </a>
-
-          <a
-            href="#new-popular"
-            className="navigation-link"
-          >
-            New & Popular
-          </a>
-
-          <a
-            href="#my-list"
-            className="navigation-link"
-          >
-            My List
-          </a>
+          </Link>
 
         </nav>
 
+        {/* =================================
+            SEARCH
+        ================================= */}
 
-        {/* Mobile Menu Button */}
-
-        <button
-          type="button"
-          className="mobile-menu-button"
-          onClick={() =>
-            setMobileMenuOpen(!mobileMenuOpen)
+        <form
+          className="header-search"
+          onSubmit={
+            handleSearchSubmit
           }
-          aria-label="Open navigation menu"
-          aria-expanded={mobileMenuOpen}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-      </div>
-
-
-      {/* =========================
-          RIGHT SIDE
-      ========================== */}
-
-      <div className="header-right">
-
-
-        {/* Search */}
-
-        <div
-          className={`search-wrapper ${
-            searchOpen ? "search-open" : ""
-          }`}
         >
 
-          <button
-            type="button"
-            className="header-icon-button"
-            onClick={() =>
-              setSearchOpen(!searchOpen)
-            }
-            aria-label="Search"
-          >
-
-            <svg
-              className="header-svg-icon"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <circle
-                cx="11"
-                cy="11"
-                r="7"
-              />
-
-              <line
-                x1="16.5"
-                y1="16.5"
-                x2="21"
-                y2="21"
-              />
-            </svg>
-
-          </button>
-
-
-          {searchOpen && (
-
-            <input
-              type="text"
-              className="header-search-input"
-              placeholder="Titles, people, genres"
-              autoFocus
-              aria-label="Search titles"
-            />
-
-          )}
-
-        </div>
-
-
-        {/* Kids */}
-
-        <a
-          href="#kids"
-          className="kids-link"
-        >
-          Kids
-        </a>
-
-
-        {/* Notifications */}
-
-        <button
-          type="button"
-          className="header-icon-button"
-          aria-label="Notifications"
-        >
-
-          <svg
-            className="header-svg-icon"
-            viewBox="0 0 24 24"
+          <span
+            className="header-search-icon"
             aria-hidden="true"
           >
-
-            <path
-              d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"
-            />
-
-            <path
-              d="M10 21h4"
-            />
-
-          </svg>
-
-        </button>
-
-
-        {/* Profile */}
-
-        <button
-          type="button"
-          className="profile-button"
-          aria-label="Open profile menu"
-        >
-
-          <span className="profile-avatar">
-            S
+            🔎
           </span>
 
-          <span className="profile-arrow">
-            ▼
-          </span>
+          <input
+            type="search"
+            value={searchText}
+            onChange={(event) =>
+              setSearchText(
+                event.target.value
+              )
+            }
+            placeholder="Search movies..."
+            aria-label="Search movies"
+          />
 
-        </button>
+          {searchText && (
+            <button
+              type="button"
+              className="header-search-clear"
+              onClick={
+                handleClearSearch
+              }
+              aria-label="Clear search"
+            >
+              ×
+            </button>
+          )}
+
+          <button
+            type="submit"
+            className="header-search-button"
+          >
+            Search
+          </button>
+
+        </form>
 
       </div>
-
-
-      {/* =========================
-          MOBILE NAVIGATION
-      ========================== */}
-
-      {mobileMenuOpen && (
-
-        <nav className="mobile-navigation">
-
-          <a href="#home">
-            Home
-          </a>
-
-          <a href="#tv-shows">
-            TV Shows
-          </a>
-
-          <a href="#movies">
-            Movies
-          </a>
-
-          <a href="#new-popular">
-            New & Popular
-          </a>
-
-          <a href="#my-list">
-            My List
-          </a>
-
-        </nav>
-
-      )}
 
     </header>
   );

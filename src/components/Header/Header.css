@@ -1,451 +1,364 @@
-/* ========================================
-   NETFLIX HEADER
-======================================== */
-
-.netflix-header {
+.header {
   position: fixed;
 
   top: 0;
   left: 0;
+  right: 0;
+
+  z-index: 1000;
 
   width: 100%;
-  height: 68px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 4%;
-
-  box-sizing: border-box;
 
   background:
     linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.95),
-      rgba(0, 0, 0, 0.75),
-      transparent
+      rgba(
+        0,
+        0,
+        0,
+        0.95
+      ) 0%,
+      rgba(
+        0,
+        0,
+        0,
+        0.75
+      ) 70%,
+      transparent 100%
     );
 
   color: #ffffff;
-
-  z-index: 1000;
-
-  transition:
-    background-color 0.3s ease;
 }
 
+.header-container {
+  width: 100%;
+  max-width: 1600px;
 
-/* ========================================
-   LEFT SIDE
-======================================== */
+  min-height: 70px;
 
-.header-left {
+  margin: 0 auto;
+
   display: flex;
 
   align-items: center;
 
-  gap: 42px;
+  gap: 28px;
 
-  min-width: 0;
+  padding:
+    0
+    40px;
 }
 
+/* =====================================
+   LOGO
+===================================== */
 
-/* ========================================
-   NETFLIX LOGO
-======================================== */
-
-.netflix-logo {
-  display: block;
+.header-logo {
+  flex-shrink: 0;
 
   color: #e50914;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  font-size: 27px;
+  font-size: 1.65rem;
 
   font-weight: 900;
 
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
 
   line-height: 1;
 
-  text-decoration: none;
-
-  white-space: nowrap;
-
-  cursor: pointer;
+  transition:
+    opacity 0.2s ease;
 }
 
-.netflix-logo:hover {
-  color: #f40612;
+.header-logo:hover {
+  opacity: 0.85;
 }
 
+/* =====================================
+   NAVIGATION
+===================================== */
 
-/* ========================================
-   DESKTOP NAVIGATION
-======================================== */
-
-.desktop-navigation {
+.header-nav {
   display: flex;
 
   align-items: center;
 
-  gap: 22px;
+  gap: 24px;
 }
 
-.navigation-link {
-  color: #e5e5e5;
+.header-nav-link {
+  position: relative;
 
-  font-size: 14px;
+  color: #d9d9d9;
+
+  font-size: 0.92rem;
 
   font-weight: 500;
-
-  text-decoration: none;
-
-  white-space: nowrap;
 
   transition:
     color 0.2s ease;
 }
 
-.navigation-link:hover {
-  color: #b3b3b3;
-}
-
-.navigation-link.active {
+.header-nav-link:hover {
   color: #ffffff;
-
-  font-weight: 700;
 }
 
-
-/* ========================================
-   RIGHT SIDE
-======================================== */
-
-.header-right {
-  display: flex;
-
-  align-items: center;
-
-  gap: 18px;
+.header-nav-link.active {
+  color: #ffffff;
 }
 
+.header-nav-link.active::after {
+  content: "";
 
-/* ========================================
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  bottom: -7px;
+
+  height: 2px;
+
+  border-radius: 2px;
+
+  background-color: #e50914;
+}
+
+/* =====================================
    SEARCH
-======================================== */
+===================================== */
 
-.search-wrapper {
+.header-search {
+  margin-left: auto;
+
   display: flex;
 
   align-items: center;
 
-  border: 1px solid transparent;
+  width: min(
+    100%,
+    440px
+  );
 
-  background-color: transparent;
+  min-height: 40px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.25
+    );
+
+  border-radius: 5px;
+
+  background-color:
+    rgba(
+      20,
+      20,
+      20,
+      0.85
+    );
 
   transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease;
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.search-wrapper.search-open {
-  background-color: #000000;
+.header-search:focus-within {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
 
-  border-color: #ffffff;
+  background-color:
+    rgba(
+      30,
+      30,
+      30,
+      0.95
+    );
 }
 
+.header-search-icon {
+  flex-shrink: 0;
 
-.header-search-input {
-  width: 210px;
+  margin-left: 12px;
 
-  height: 34px;
+  font-size: 0.9rem;
 
-  padding: 0 12px;
+  opacity: 0.75;
+}
+
+.header-search input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 38px;
+
+  padding:
+    0
+    10px;
 
   border: none;
 
   outline: none;
 
-  background-color: transparent;
+  background: transparent;
 
   color: #ffffff;
 
-  font-size: 13px;
+  font-size: 0.9rem;
 }
 
-.header-search-input::placeholder {
-  color: #cccccc;
+.header-search input::placeholder {
+  color: #888888;
 }
 
+.header-search-clear {
+  flex-shrink: 0;
 
-/* ========================================
-   HEADER ICON BUTTON
-======================================== */
+  width: 30px;
 
-.header-icon-button {
-  width: 34px;
-  height: 34px;
+  height: 30px;
 
   display: flex;
 
   align-items: center;
   justify-content: center;
 
-  padding: 0;
+  margin-right: 2px;
 
   border: none;
 
   background: transparent;
 
-  color: #ffffff;
+  color: #aaaaaa;
+
+  font-size: 1.2rem;
 
   cursor: pointer;
 }
 
-.header-icon-button:hover {
-  color: #b3b3b3;
-}
-
-
-.header-svg-icon {
-  width: 22px;
-  height: 22px;
-
-  fill: none;
-
-  stroke: currentColor;
-
-  stroke-width: 1.8;
-
-  stroke-linecap: round;
-
-  stroke-linejoin: round;
-}
-
-
-/* ========================================
-   KIDS
-======================================== */
-
-.kids-link {
+.header-search-clear:hover {
   color: #ffffff;
-
-  font-size: 13px;
-
-  font-weight: 500;
-
-  text-decoration: none;
-
-  white-space: nowrap;
 }
 
-.kids-link:hover {
-  color: #b3b3b3;
-}
+.header-search-button {
+  flex-shrink: 0;
 
+  height: 32px;
 
-/* ========================================
-   PROFILE
-======================================== */
+  margin-right: 4px;
 
-.profile-button {
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-
-  padding: 0;
+  padding:
+    0
+    12px;
 
   border: none;
-
-  background: transparent;
-
-  color: #ffffff;
-
-  cursor: pointer;
-}
-
-
-.profile-avatar {
-  width: 34px;
-  height: 34px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
 
   border-radius: 4px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #e50914,
-      #7a080d
-    );
+  background-color: #e50914;
 
   color: #ffffff;
 
-  font-size: 14px;
+  font-size: 0.78rem;
 
-  font-weight: 800;
-}
-
-
-.profile-arrow {
-  font-size: 8px;
-
-  color: #ffffff;
-
-  transition:
-    transform 0.2s ease;
-}
-
-.profile-button:hover .profile-arrow {
-  transform: rotate(180deg);
-}
-
-
-/* ========================================
-   MOBILE MENU BUTTON
-======================================== */
-
-.mobile-menu-button {
-  display: none;
-
-  width: 35px;
-  height: 35px;
-
-  padding: 7px;
-
-  border: none;
-
-  background: transparent;
+  font-weight: 700;
 
   cursor: pointer;
+
+  transition:
+    background-color 0.2s ease;
 }
 
-.mobile-menu-button span {
-  display: block;
-
-  width: 100%;
-  height: 2px;
-
-  margin: 5px 0;
-
-  background-color: #ffffff;
+.header-search-button:hover {
+  background-color: #f6121d;
 }
 
-
-/* ========================================
-   MOBILE NAVIGATION
-======================================== */
-
-.mobile-navigation {
-  display: none;
-}
-
-
-/* ========================================
+/* =====================================
    TABLET
-======================================== */
+===================================== */
 
-@media (max-width: 1050px) {
+@media (max-width: 900px) {
+  .header-container {
+    gap: 18px;
 
-  .desktop-navigation {
-    gap: 15px;
+    padding:
+      0
+      25px;
   }
 
-  .navigation-link {
-    font-size: 13px;
+  .header-logo {
+    font-size: 1.4rem;
   }
 
-  .header-left {
-    gap: 25px;
+  .header-nav {
+    gap: 16px;
   }
 
-  .header-right {
-    gap: 12px;
+  .header-search {
+    width: min(
+      100%,
+      350px
+    );
   }
 
+  .header-search-button {
+    padding:
+      0
+      10px;
+  }
 }
 
-
-/* ========================================
+/* =====================================
    MOBILE
-======================================== */
+===================================== */
 
-@media (max-width: 750px) {
+@media (max-width: 650px) {
+  .header-container {
+    min-height: auto;
 
-  .netflix-header {
-    height: 60px;
+    flex-wrap: wrap;
 
-    padding: 0 20px;
+    gap: 12px;
+
+    padding:
+      12px
+      15px;
   }
 
-
-  .header-left {
-    gap: 15px;
+  .header-logo {
+    font-size: 1.3rem;
   }
 
+  .header-nav {
+    order: 2;
 
-  .desktop-navigation {
-    display: none;
+    width: auto;
   }
 
-
-  .mobile-menu-button {
-    display: block;
+  .header-nav-link {
+    font-size: 0.82rem;
   }
 
+  .header-search {
+    order: 3;
 
-  .kids-link {
-    display: none;
+    width: 100%;
+
+    margin-left: 0;
   }
 
-
-  .header-right {
-    gap: 8px;
+  .header-search-button {
+    padding:
+      0
+      11px;
   }
-
-
-  .header-search-input {
-    width: 145px;
-  }
-
-
-  .profile-arrow {
-    display: none;
-  }
-
-}
-
-
-/* ========================================
-   SMALL MOBILE
-======================================== */
-
-@media (max-width: 480px) {
-
-  .netflix-logo {
-    font-size: 21px;
-  }
-
-
-  .header-search-input {
-    width: 110px;
-  }
-
-
-  .header-right {
-    gap: 4px;
-  }
-
 }
