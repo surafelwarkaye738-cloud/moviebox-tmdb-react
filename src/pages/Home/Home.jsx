@@ -12,6 +12,7 @@ import Hero from "../../components/Hero/Hero";
 import MovieRow from "../../components/MovieRow/MovieRow";
 import Footer from "../../components/Footer/Footer";
 import TrailerModal from "../../components/TrailerModal/TrailerModal";
+import MovieSkeleton from "../../components/MovieSkeleton/MovieSkeleton";
 
 import {
   getTrendingMovies,
@@ -32,13 +33,13 @@ import "./Home.css";
 
 function Home() {
   /*
-    Navigation.
+    React Router navigation.
   */
   const navigate =
     useNavigate();
 
   /*
-    Hero movie.
+    Featured Hero movie.
   */
   const [featuredMovie, setFeaturedMovie] =
     useState(null);
@@ -65,19 +66,19 @@ function Home() {
     useState([]);
 
   /*
-    Main loading state.
+    Loading state.
   */
   const [loading, setLoading] =
     useState(true);
 
   /*
-    Main error.
+    Error state.
   */
   const [error, setError] =
     useState("");
 
   /*
-    Trailer modal state.
+    Trailer modal.
   */
   const [isTrailerOpen, setIsTrailerOpen] =
     useState(false);
@@ -95,14 +96,24 @@ function Home() {
     useState("");
 
   /*
-    Load movie categories.
+    Load TMDB movie categories.
   */
   const loadMovies = async () => {
     try {
+      /*
+        Start loading.
+      */
       setLoading(true);
 
+      /*
+        Clear previous error.
+      */
       setError("");
 
+      /*
+        Fetch independent endpoints
+        concurrently.
+      */
       const [
         trendingTodayData,
         trendingThisWeekData,
@@ -124,6 +135,9 @@ function Home() {
         getUpcomingMovies(),
       ]);
 
+      /*
+        Convert TMDB results.
+      */
       const trendingTodayMovies =
         mapMovies(
           trendingTodayData.results,
@@ -166,6 +180,9 @@ function Home() {
           getBackdropUrl
         );
 
+      /*
+        Save state.
+      */
       setTrendingToday(
         trendingTodayMovies
       );
@@ -213,12 +230,15 @@ function Home() {
           "Unable to load movies from TMDB."
       );
     } finally {
+      /*
+        Loading finished.
+      */
       setLoading(false);
     }
   };
 
   /*
-    Load movies on page start.
+    Load data on first render.
   */
   useEffect(() => {
     loadMovies();
@@ -232,8 +252,7 @@ function Home() {
   ) => {
     try {
       /*
-        Open modal immediately
-        so the user sees feedback.
+        Open modal immediately.
       */
       setIsTrailerOpen(true);
 
@@ -250,7 +269,7 @@ function Home() {
       setTrailerLoading(true);
 
       /*
-        Fetch best trailer.
+        Fetch trailer.
       */
       const trailer =
         await getMovieTrailer(
@@ -286,11 +305,13 @@ function Home() {
   };
 
   /*
-    Close trailer modal.
+    Close trailer.
   */
   const handleCloseTrailer =
     () => {
-      setIsTrailerOpen(false);
+      setIsTrailerOpen(
+        false
+      );
 
       setSelectedTrailer(
         null
@@ -316,26 +337,6 @@ function Home() {
     );
   };
 
-  /*
-    My List placeholder.
-    Real My List comes in
-    the next phase.
-  */
-  const handleAddToList = (
-    movie,
-    added
-  ) => {
-    if (added) {
-      console.log(
-        `Added "${movie.title}" to My List`
-      );
-    } else {
-      console.log(
-        `Removed "${movie.title}" from My List`
-      );
-    }
-  };
-
   return (
     <div className="home-page">
 
@@ -343,21 +344,85 @@ function Home() {
 
       <main className="home-main">
 
+        {/* =================================
+            LOADING STATE
+        ================================= */}
+
         {loading && (
-          <div className="home-loading">
+          <section className="home-loading-state">
 
-            <div className="loading-spinner"></div>
+            <div className="home-loading-hero">
 
-            <p>
-              Loading movies from TMDB...
-            </p>
+              <div className="home-loading-hero-text">
 
-          </div>
+                <div className="skeleton-line skeleton-small"></div>
+
+                <div className="skeleton-line skeleton-title"></div>
+
+                <div className="skeleton-line skeleton-description"></div>
+
+                <div className="skeleton-line skeleton-description short"></div>
+
+                <div className="skeleton-buttons">
+
+                  <div></div>
+
+                  <div></div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div className="home-loading-rows">
+
+              <section className="home-skeleton-section">
+
+                <div className="home-skeleton-heading"></div>
+
+                <MovieSkeleton
+                  count={7}
+                />
+
+              </section>
+
+              <section className="home-skeleton-section">
+
+                <div className="home-skeleton-heading"></div>
+
+                <MovieSkeleton
+                  count={7}
+                />
+
+              </section>
+
+              <section className="home-skeleton-section">
+
+                <div className="home-skeleton-heading"></div>
+
+                <MovieSkeleton
+                  count={7}
+                />
+
+              </section>
+
+            </div>
+
+          </section>
         )}
+
+        {/* =================================
+            ERROR STATE
+        ================================= */}
 
         {!loading &&
           error && (
-            <div className="home-error">
+            <section className="home-error">
+
+              <div className="home-error-icon">
+                ⚠
+              </div>
 
               <h2>
                 Something went wrong
@@ -369,14 +434,20 @@ function Home() {
 
               <button
                 type="button"
-                onClick={loadMovies}
+                onClick={
+                  loadMovies
+                }
                 className="retry-button"
               >
                 Try Again
               </button>
 
-            </div>
+            </section>
           )}
+
+        {/* =================================
+            MAIN CONTENT
+        ================================= */}
 
         {!loading &&
           !error &&
@@ -384,8 +455,12 @@ function Home() {
             <>
 
               <Hero
-                movie={featuredMovie}
-                onPlay={handlePlay}
+                movie={
+                  featuredMovie
+                }
+                onPlay={
+                  handlePlay
+                }
                 onMoreInfo={
                   handleMoreInfo
                 }
@@ -401,9 +476,6 @@ function Home() {
                   onPlay={
                     handlePlay
                   }
-                  onAddToList={
-                    handleAddToList
-                  }
                 />
 
                 <MovieRow
@@ -413,9 +485,6 @@ function Home() {
                   }
                   onPlay={
                     handlePlay
-                  }
-                  onAddToList={
-                    handleAddToList
                   }
                 />
 
@@ -427,9 +496,6 @@ function Home() {
                   onPlay={
                     handlePlay
                   }
-                  onAddToList={
-                    handleAddToList
-                  }
                 />
 
                 <MovieRow
@@ -439,9 +505,6 @@ function Home() {
                   }
                   onPlay={
                     handlePlay
-                  }
-                  onAddToList={
-                    handleAddToList
                   }
                 />
 
@@ -453,9 +516,6 @@ function Home() {
                   onPlay={
                     handlePlay
                   }
-                  onAddToList={
-                    handleAddToList
-                  }
                 />
 
                 <MovieRow
@@ -466,9 +526,6 @@ function Home() {
                   onPlay={
                     handlePlay
                   }
-                  onAddToList={
-                    handleAddToList
-                  }
                 />
 
               </section>
@@ -477,6 +534,10 @@ function Home() {
           )}
 
       </main>
+
+      {/* =================================
+          TRAILER MODAL
+      ================================= */}
 
       <TrailerModal
         isOpen={

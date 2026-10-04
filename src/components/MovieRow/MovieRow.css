@@ -3,8 +3,16 @@
 
   width: 100%;
 
-  margin-bottom: 40px;
+  margin-bottom: 42px;
+
+  padding:
+    0
+    50px;
 }
+
+/* =====================================
+   HEADER
+===================================== */
 
 .movie-row-header {
   display: flex;
@@ -13,9 +21,9 @@
 
   justify-content: space-between;
 
-  padding: 0 4%;
+  gap: 20px;
 
-  margin-bottom: 14px;
+  margin-bottom: 15px;
 }
 
 .movie-row-title {
@@ -23,111 +31,240 @@
 
   color: #ffffff;
 
-  font-size: 22px;
+  font-size: 1.35rem;
+
   font-weight: 700;
+
+  line-height: 1.2;
 }
+
+/* =====================================
+   CONTROLS
+===================================== */
 
 .movie-row-controls {
   display: flex;
+
+  align-items: center;
 
   gap: 8px;
 }
 
 .movie-row-arrow {
+  width: 36px;
+
+  height: 36px;
+
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
-  width: 38px;
-  height: 38px;
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
 
-  border: none;
+  border-radius: 50%;
 
-  border-radius: 4px;
-
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color:
+    rgba(
+      20,
+      20,
+      20,
+      0.9
+    );
 
   color: #ffffff;
 
-  font-size: 30px;
+  font-size: 1.55rem;
+
+  line-height: 1;
 
   cursor: pointer;
 
   transition:
     background-color 0.2s ease,
+    border-color 0.2s ease,
     transform 0.2s ease;
 }
 
 .movie-row-arrow:hover {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: #252525;
+
+  border-color: #555555;
 
   transform: scale(1.05);
 }
 
-.movie-row-container {
+/* =====================================
+   SCROLL AREA
+===================================== */
+
+.movie-row-wrapper {
+  position: relative;
+
   width: 100%;
 
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  padding: 5px 4% 20px;
-
-  scroll-behavior: smooth;
-
-  scrollbar-width: none;
-}
-
-.movie-row-container::-webkit-scrollbar {
-  display: none;
+  overflow: hidden;
 }
 
 .movie-row-list {
   display: flex;
 
-  gap: 12px;
+  align-items: flex-start;
 
-  width: max-content;
+  gap: 14px;
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  padding:
+    5px
+    5px
+    12px;
+
+  scroll-behavior: smooth;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #444444
+    transparent;
 }
+
+.movie-row-list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.movie-row-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.movie-row-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background-color: #444444;
+}
+
+.movie-row-list::-webkit-scrollbar-thumb:hover {
+  background-color: #666666;
+}
+
+/*
+  Prevent the cards from shrinking
+  inside the horizontal row.
+*/
+
+.movie-row-list
+  .movie-card {
+  flex: 0 0 190px;
+
+  width: 190px;
+}
+
+/* =====================================
+   TABLET
+===================================== */
 
 @media (max-width: 900px) {
+  .movie-row {
+    margin-bottom: 35px;
+
+    padding:
+      0
+      30px;
+  }
+
   .movie-row-title {
-    font-size: 20px;
+    font-size: 1.2rem;
   }
 
-  .movie-row-header {
-    padding: 0 3%;
+  .movie-row-list {
+    gap: 12px;
   }
 
-  .movie-row-container {
-    padding-left: 3%;
-    padding-right: 3%;
+  .movie-row-list
+    .movie-card {
+    flex-basis: 170px;
+
+    width: 170px;
   }
 }
+
+/* =====================================
+   MOBILE
+===================================== */
 
 @media (max-width: 600px) {
   .movie-row {
     margin-bottom: 28px;
+
+    padding:
+      0
+      15px;
   }
 
   .movie-row-header {
-    padding: 0 4%;
+    margin-bottom: 11px;
   }
 
   .movie-row-title {
-    font-size: 18px;
+    font-size: 1rem;
   }
+
+  /*
+    Keep controls visible on mobile,
+    but make them smaller.
+  */
 
   .movie-row-controls {
-    display: none;
+    gap: 5px;
   }
 
-  .movie-row-container {
-    padding-left: 4%;
-    padding-right: 4%;
+  .movie-row-arrow {
+    width: 30px;
+
+    height: 30px;
+
+    font-size: 1.2rem;
   }
 
   .movie-row-list {
     gap: 10px;
+
+    padding:
+      3px
+      3px
+      10px;
+
+    /*
+      Better touch scrolling.
+    */
+
+    scroll-snap-type: x proximity;
+
+    scrollbar-width: none;
+  }
+
+  .movie-row-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .movie-row-list
+    .movie-card {
+    flex-basis: 145px;
+
+    width: 145px;
+
+    scroll-snap-align: start;
   }
 }

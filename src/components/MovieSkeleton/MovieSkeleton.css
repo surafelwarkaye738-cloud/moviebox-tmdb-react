@@ -1,0 +1,153 @@
+.movie-skeleton-row {
+  display: flex;
+
+  gap: 14px;
+
+  width: 100%;
+
+  overflow: hidden;
+}
+
+.movie-skeleton {
+  flex: 0 0 190px;
+
+  width: 190px;
+
+  overflow: hidden;
+
+  border-radius: 6px;
+}
+
+/* =====================================
+   POSTER
+===================================== */
+
+.movie-skeleton-poster {
+  width: 100%;
+
+  aspect-ratio: 2 / 3;
+
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #171717 25%,
+      #242424 37%,
+      #171717 63%
+    );
+
+  background-size: 400% 100%;
+
+  animation:
+    skeleton-shimmer
+    1.5s ease-in-out infinite;
+}
+
+/* =====================================
+   TITLE
+===================================== */
+
+.movie-skeleton-title {
+  width: 75%;
+
+  height: 12px;
+
+  margin-top: 11px;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #171717 25%,
+      #242424 37%,
+      #171717 63%
+    );
+
+  background-size: 400% 100%;
+
+  animation:
+    skeleton-shimmer
+    1.5s ease-in-out infinite;
+}
+
+/* =====================================
+   META
+===================================== */
+
+.movie-skeleton-meta {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 8px;
+}
+
+.movie-skeleton-meta span {
+  display: block;
+
+  width: 35px;
+
+  height: 8px;
+
+  border-radius: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #171717 25%,
+      #242424 37%,
+      #171717 63%
+    );
+
+  background-size: 400% 100%;
+
+  animation:
+    skeleton-shimmer
+    1.5s ease-in-out infinite;
+}
+
+/* =====================================
+   ANIMATION
+===================================== */
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position:
+      100% 0;
+  }
+
+  100% {
+    background-position:
+      -100% 0;
+  }
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 900px) {
+  .movie-skeleton {
+    flex-basis: 170px;
+
+    width: 170px;
+  }
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+  .movie-skeleton-row {
+    gap: 10px;
+  }
+
+  .movie-skeleton {
+    flex-basis: 145px;
+
+    width: 145px;
+  }
+}
