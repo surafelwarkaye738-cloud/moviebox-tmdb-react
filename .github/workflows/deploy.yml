@@ -50,7 +50,6 @@ jobs:
 
   deploy:
     needs: build
-
     runs-on: ubuntu-latest
 
     environment:
@@ -59,6 +58,6 @@ jobs:
 
     steps:
 
-      - name: Deploy MovieBox to GitHub Pages
+      - name: Deploy MovieBox
         id: deployment
         uses: actions/deploy-pages@v4
