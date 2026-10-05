@@ -1,8 +1,8 @@
 {
-  "name": "netflix-clone",
+  "name": "moviebox-tmdb-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://surafelwarkaye738-cloud.github.io/netflix-clone-react-tmdb/",
+  "homepage": "https://surafelwarkaye738-cloud.github.io/moviebox-tmdb-react/",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
