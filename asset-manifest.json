@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/moviebox-tmdb-react/static/css/main.651db304.css",
+    "main.js": "/moviebox-tmdb-react/static/js/main.8a00110b.js",
+    "index.html": "/moviebox-tmdb-react/index.html",
+    "main.651db304.css.map": "/moviebox-tmdb-react/static/css/main.651db304.css.map",
+    "main.8a00110b.js.map": "/moviebox-tmdb-react/static/js/main.8a00110b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.651db304.css",
+    "static/js/main.8a00110b.js"
+  ]
+}
